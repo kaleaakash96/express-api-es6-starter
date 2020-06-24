@@ -33,7 +33,8 @@ export function getUser(id) {
  * @returns {Promise}
  */
 export function createUser(user) {
-  return new User({ name: user.name }).save();
+  let result = new User(User.processInputForSave(user)).save();
+  return result;
 }
 
 /**
@@ -44,7 +45,7 @@ export function createUser(user) {
  * @returns {Promise}
  */
 export function updateUser(id, user) {
-  return new User({ id }).save({ name: user.name });
+  return new User({ id }).save(user);
 }
 
 /**

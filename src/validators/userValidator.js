@@ -5,10 +5,24 @@ import * as userService from '../services/userService';
 
 // Validation schema
 const schema = Joi.object({
-  name: Joi.string()
-    .label('Name')
-    .max(90)
+  email: Joi.string()
+    .label('email')
     .required()
+    .email({ minDomainSegments: 2, tlds: { }}),
+  first_name: Joi.string()
+    .label('first_name')
+    .max(90),
+  last_name: Joi.string()
+    .label('last_name')
+    .max(90),
+  mobile_no: Joi.string()
+    .label('mobile_no')
+    .max(90),
+  password: Joi.string()
+    .label('password')
+    .max(90)
+    .pattern(/^[a-zA-Z0-9]{3,30}$/),
+  password2: Joi.ref('password'),
 });
 
 /**

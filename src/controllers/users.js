@@ -68,6 +68,6 @@ export function update(req, res, next) {
 export function deleteUser(req, res, next) {
   userService
     .deleteUser(req.params.id)
-    .then(data => res.status(HttpStatus.NO_CONTENT).json({ data }))
+    .then(data => res.status(HttpStatus.OK).json({ message:"success",data }))
     .catch(err => next(err));
 }
