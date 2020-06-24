@@ -33,8 +33,10 @@ export function getUser(id) {
  * @returns {Promise}
  */
 export function createUser(user) {
-  let result = new User(User.processInputForSave(user)).save();
-  return result;
+  return User.processInputForSave(user).then((attrsObj)=>{
+    let result = new User(attrsObj).save();
+    return result;
+  });
 }
 
 /**
@@ -45,7 +47,10 @@ export function createUser(user) {
  * @returns {Promise}
  */
 export function updateUser(id, user) {
-  return new User({ id }).save(user);
+  return User.processInputForSave(user).then((attrsObj)=>{
+    let result = new User({ id }).save(attrsObj);
+    return result;
+  });
 }
 
 /**

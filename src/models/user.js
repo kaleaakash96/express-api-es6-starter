@@ -1,4 +1,6 @@
 import bookshelf from '../db';
+import bcrypt from 'bcrypt';
+import { at } from 'lodash';
 
 const TABLE_NAME = 'users';
 
@@ -35,13 +37,32 @@ class User extends bookshelf.Model {
   static processInputForSave(attrs){
     var result ={};
     // remove all collumns that are not valid 
-    let keys = Object.keys(attrs).map(item => {
+    let keys = Object.keys(attrs);
+    keys.map(item => {
       if(User.getFillableCollumns().includes(item)){
         result[""+item] = attrs[""+item];
       }
     });
-    return result;
+    return User.processForPassword(result,keys);
   }
+
+  static async processForPassword(attrs,keys){
+    if('password' in attrs){
+      attrs["password"] = await User.hashPassword(attrs["password"]);
+    }
+    return attrs;
+  }
+
+  static hashPassword(password) {
+    return bcrypt.hash(password, 10)
+  }
+ 
+  static validatePassword(plainPassword, hashedPassword) {
+    return bcrypt.compare(plainPassword, hashedPassword);
+  }
+
+
+
   initialize() {
     // this.on('saving', (model, attrs, options) => {
     //   // This is fired before a model insert ot update is called 
