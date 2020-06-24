@@ -7,7 +7,6 @@ import * as userService from '../services/userService';
 const schema = Joi.object({
   email: Joi.string()
     .label('email')
-    .required()
     .email({ minDomainSegments: 2, tlds: { }}),
   first_name: Joi.string()
     .label('first_name')
