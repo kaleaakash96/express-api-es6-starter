@@ -45,6 +45,20 @@ export function create(req, res, next) {
 }
 
 /**
+ * sign a current user in
+ * 
+ * @param {Object} req 
+ * @param {Object} res 
+ * @param {Function} next 
+ */
+export function signin(req, res, next) {
+  userService
+  .signIn(req.body)
+  .then(data => res.status(HttpStatus.OK).json({ data }))
+  .catch(err => next(err));
+}
+
+/**
  * Update a user.
  *
  * @param {Object} req

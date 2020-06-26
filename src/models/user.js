@@ -34,6 +34,13 @@ class User extends bookshelf.Model {
       "updated_at"
     ]
   }
+
+
+  /**
+   * I tried intercepting the while saving hook in bookshelf how ever....
+   * the object is imutable some how in that hook so had to manually pass thru this function before saving everytime 
+   * @param {Object} attrs 
+   */
   static processInputForSave(attrs){
     var result ={};
     // remove all collumns that are not valid 

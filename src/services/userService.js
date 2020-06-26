@@ -1,6 +1,7 @@
-import Boom from '@hapi/boom';
+import { Boom, conflict, notFound }  from '@hapi/boom';
 
 import User from '../models/user';
+import authService from './auth.service';
 
 /**
  * Get all users.
@@ -22,8 +23,23 @@ export function getUser(id) {
     .fetch()
     .then(user => user)
     .catch(User.NotFoundError, () => {
-      throw Boom.notFound('User not found');
+      throw notFound('User not found');
     });
+}
+
+/**
+ * Fetch a user by any of it's Params
+ * 
+ * @param {String} param 
+ * @param {String} paramvalue 
+ */
+export function getUserByParam(req){
+  return  User.where({[req.param]:[req.paramvalue]})
+  .fetch()
+  .then(user=>user)
+  .catch(User.NotFoundError,()=>{
+    throw notFound('User not found for '+param+" = "+paramvalue);
+  })
 }
 
 /**
@@ -33,11 +49,24 @@ export function getUser(id) {
  * @returns {Promise}
  */
 export function createUser(user) {
-  return User.processInputForSave(user).then((attrsObj)=>{
-    let result = new User(attrsObj).save();
-    return result;
+  return User.processInputForSave(user)
+  .then( async (attrsObj)=>{
+    //save user in table 
+    try{
+      let result = await new User(attrsObj).save();
+    
+      //add jwt token to the user data being returned ..!!
+      result.attributes.token = authService().issue({id: result.attributes.id});
+      return result;
+    }catch(err2){
+      throw conflict(err2);
+    }
+  })
+  .catch((err)=>{
+    throw conflict(err);
   });
 }
+
 
 /**
  * Update a user.
@@ -47,10 +76,18 @@ export function createUser(user) {
  * @returns {Promise}
  */
 export function updateUser(id, user) {
-  return User.processInputForSave(user).then((attrsObj)=>{
-    let result = new User({ id }).save(attrsObj);
-    return result;
-  });
+  return User.processInputForSave(user)
+  .then( async (attrsObj)=>{
+    try{
+      let result = await new User({ id }).save(attrsObj)
+      return result;
+    }catch(err2){
+      throw conflict(err2);
+    }
+  })
+  .catch((err)=>{
+    throw conflict(err);
+  });;
 }
 
 /**
@@ -61,4 +98,33 @@ export function updateUser(id, user) {
  */
 export function deleteUser(id) {
   return new User({ id }).fetch().then(user => user.destroy());
+}
+
+
+/**
+ * Signin a user
+ * 
+ * @param {Object} req 
+ */
+export async function signIn(reqBody){
+  return getUserByParam({param:'email',paramvalue:[reqBody.email]})
+  .then(async (user)=>{
+    if(user){
+      const singInVerified = await User.validatePassword(reqBody.password,user.attributes.password);
+      if(singInVerified){
+        user.attributes.token = authService().issue({id:user.id});
+        var data = {
+          message:"signin successfull",
+          data:{
+            'user':user.attributes
+          }
+        }
+        return data;
+      }
+    }
+
+    //else return unauthroised
+    throw Boom.unauthorized('invalid params');
+  });
+  
 }
