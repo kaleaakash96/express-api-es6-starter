@@ -154,6 +154,19 @@ Run tests with coverage.
 
     $ yarn test:coverage
 
+## Firebase functions deploy
+    $ yarn build
+    $ firebase deplay
+
+diff from main build are 
+1.firebase does not support es6
+2.firebase deploy command searches for functions folder then looks for app inside the functions folder hence  creates functions     and edpoints  on all exports from the index.js inside the functions folder  
+ 
+To overcome the following issues I  
+Changed scripts for yarn build to create a transpiled version of the es6 in dist as well functions folder.
+
+Mind you this is good for a ref as of now this does get deployed for some reason , have to see this ....!!
+
 ## Why 8848?
 
 Because the highest point in the world is [8848 metres](https://en.wikipedia.org/wiki/Mount_Everest).
