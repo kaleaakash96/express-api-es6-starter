@@ -16,10 +16,13 @@ import routes from './routes';
 import json from './middlewares/json';
 import logger, { logStream } from './utils/logger';
 import * as errorHandler from './middlewares/errorHandler';
-
+//firebae imports...
+import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
 // Initialize Sentry
 // https://docs.sentry.io/platforms/node/express/
 Sentry.init({ dsn: process.env.SENTRY_DSN });
+admin.initializeApp(functions.config().firebase);
 
 const app = express();
 
@@ -69,9 +72,9 @@ app.use(Sentry.Handlers.errorHandler());
 app.use(errorHandler.genericErrorHandler);
 app.use(errorHandler.methodNotAllowed);
 
-app.listen(app.get('port'), app.get('host'), () => {
-  logger.info(`Server started at http://${app.get('host')}:${app.get('port')}/api`);
-});
+// app.listen(app.get('port'), app.get('host'), () => {
+//   logger.info(`Server started at http://${app.get('host')}:${app.get('port')}/api`);
+// });
 
 // Catch unhandled rejections
 process.on('unhandledRejection', err => {
@@ -99,4 +102,6 @@ process.on('uncaughtException', err => {
   }
 });
 
-export default app;
+export const webApi = functions.https.onRequest(app);
+
+// export default app;

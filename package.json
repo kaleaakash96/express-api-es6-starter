@@ -15,9 +15,11 @@
     "prettier": "prettier --write **/*.{js,json,yml,yaml,md}",
     "make:seeder": "yarn knex seed:make --knexfile src/knexfile.js",
     "make:migration": "yarn knex migrate:make --knexfile src/knexfile.js",
-    "build": "rimraf dist && babel src --copy-files --out-dir dist --source-maps",
+    "build": "rimraf dist && babel src --copy-files --out-dir dist --source-maps && npm run build:firebase",
+    "postbuild": "cd functions && npm i -s",
+    "build:firebase":"rimraf functions && babel src --copy-files --out-dir functions --ignore node_modules && cp package.json functions/",
     "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
-    "test": "cross-env NODE_ENV=test mocha --exit --recursive --require @babel/register test",
+    "test": "cross-env NODE_ENV=test mocha --exit --recursive --require yarn@babel/register test",
     "test:coverage": "cross-env NODE_ENV=test nyc --require @babel/register --reporter lcov --reporter text mocha --exit --recursive test"
   },
   "husky": {
@@ -69,7 +71,9 @@
     "swagger-jsdoc": "^3.5.0",
     "swagger-ui-dist": "^3.25.0",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^4.4.2"
+    "winston-daily-rotate-file": "^4.4.2",
+    "firebase-admin": "^8.10.0",
+    "firebase-functions": "^3.6.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -90,11 +94,11 @@
     "nyc": "^15.0.0",
     "prettier": "^2.0.1",
     "rimraf": "^3.0.2",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "firebase-functions-test": "^0.2.0"
   },
   "engines": {
-    "node": ">= 10.13.0",
-    "npm": ">= 6.4.1",
-    "yarn": ">= 1.20.0"
+    "node": "10",
+    "npm": ">= 6.4.1"
   }
 }

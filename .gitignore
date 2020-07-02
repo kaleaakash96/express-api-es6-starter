@@ -40,3 +40,9 @@ coverage
 
 # VisualStudioCode Patch
 **/.history
+
+# ignore functions directory
+functions/*
+
+# ignore dist directory
+dist/*
