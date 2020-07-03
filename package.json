@@ -4,7 +4,7 @@
   "description": "Express API ES6 Starter",
   "scripts": {
     "start": "node dist",
-    "prestart": "",
+    "prestart": "npm run build",
     "lint": "eslint src test",
     "lint:fix": "eslint src test --fix",
     "codecov": "cat coverage/*/lcov.info | codecov",
