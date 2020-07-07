@@ -48,7 +48,7 @@ function userValidator(req, res, next) {
  */
 function findUser(req, res, next) {
   return userService
-    .getUser(req.params.id)
+    .fetchById(req.params.id)
     .then(() => next())
     .catch(err => next(err));
 }

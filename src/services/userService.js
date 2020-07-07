@@ -8,7 +8,7 @@ import authService from './auth.service';
  *
  * @returns {Promise}
  */
-export function getAllUsers() {
+export function fetchAll() {
   return User.fetchAll();
 }
 
@@ -18,7 +18,7 @@ export function getAllUsers() {
  * @param   {Number|String}  id
  * @returns {Promise}
  */
-export function getUser(id) {
+export function fetchById(id) {
   return new User({ id })
     .fetch()
     .then(user => user)
@@ -33,7 +33,7 @@ export function getUser(id) {
  * @param {String} param 
  * @param {String} paramvalue 
  */
-export function getUserByParam(req){
+export function fetchByParam(req){
   return  User.where({[req.param]:[req.paramvalue]})
   .fetch()
   .then(user=>user)
@@ -48,7 +48,7 @@ export function getUserByParam(req){
  * @param   {Object}  user
  * @returns {Promise}
  */
-export function createUser(user) {
+export function create(user) {
   return User.processInputForSave(user)
   .then( async (attrsObj)=>{
     //save user in table 
@@ -75,7 +75,7 @@ export function createUser(user) {
  * @param   {Object}         user
  * @returns {Promise}
  */
-export function updateUser(id, user) {
+export function update(id, user) {
   return User.processInputForSave(user)
   .then( async (attrsObj)=>{
     try{
@@ -96,7 +96,17 @@ export function updateUser(id, user) {
  * @param   {Number|String}  id
  * @returns {Promise}
  */
-export function deleteUser(id) {
+export function deleteSoft(id) {
+  return new User({ id }).fetch().then(user => user.destroy());
+}
+
+/**
+ * Destroy a user.
+ *
+ * @param   {Number|String}  id
+ * @returns {Promise}
+ */
+export function destroy(id) {
   return new User({ id }).fetch().then(user => user.destroy());
 }
 
@@ -107,7 +117,7 @@ export function deleteUser(id) {
  * @param {Object} req 
  */
 export async function signIn(reqBody){
-  return getUserByParam({param:'email',paramvalue:[reqBody.email]})
+  return fetchByParam({param:'email',paramvalue:[reqBody.email]})
   .then(async (user)=>{
     if(user){
       const singInVerified = await User.validatePassword(reqBody.password,user.attributes.password);
