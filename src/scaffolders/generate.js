@@ -19,22 +19,22 @@ module.exports.g = function(res, next, options) {
     };
     
     let createTask = {
-    model: false,
-    controller: false,
+    model: true,
+    controller: true,
     view: false,
     route: true,
-    service: false,
-    validator: false
+    service: true,
+    validator: true
   }
 
   // set literal path
   let literals = {
-    router_file: 'src/scaffolders/literals/routes-file',
-    controller: 'src/scaffolders/literals/controller',
-    model: 'src/scaffolders/literals/model',
+    router_file: './literals/routes-file',
+    controller: './literals/controller',
+    model: './literals/model',
     router: './literals/routes.js',
-    service: 'src/scaffolders/literals/service',
-    validator: 'src/scaffolders/literals/validator',
+    service: './literals/service',
+    validator: './literals/validator',
   }
   
   if (options.api) {
@@ -60,6 +60,9 @@ module.exports.g = function(res, next, options) {
   const view_dirpath = path.join(rootpath, 'src','views');
 
   let resource = string_.normalizer(res);
+  let resourceDenormalized = string_.denormalizer(res);
+  let resourceSingularized = string_.singularizer(res);
+
   log('2. Check app project rootpath ~>', rootpath);
   log('3. Check pkg project rootpath ~>', pkgpath);
   log('4. Check argumented resource name ~>', resource);
@@ -107,7 +110,7 @@ module.exports.g = function(res, next, options) {
 
     // Generate Controller file
 
-    const controller_filename = `${resource}Controller.js`;
+    const controller_filename = `${resourceSingularized}Controller.js`;
     const controller_filepath = path.join(rootpath,'src','controllers', controller_filename);
     const controller_literal = require(literals.controller)(resource);
     makefile(controller_filepath, controller_literal, invoke_callback);
@@ -126,7 +129,7 @@ module.exports.g = function(res, next, options) {
 
     // Generate Model file
 
-    const model_filename = `${resource}.js`;
+    const model_filename = `${resourceSingularized}.js`;
     const model_filepath = path.join(rootpath,'src', 'models', model_filename);
     const model_literal = require(literals.model)(resource);
     makefile(model_filepath, model_literal, invoke_callback);
@@ -143,7 +146,7 @@ module.exports.g = function(res, next, options) {
 
     // Generate Service file
 
-    const service_filename = `${resource}Service.js`;
+    const service_filename = `${resourceSingularized}Service.js`;
     const service_filepath = path.join(rootpath,'src', 'services', service_filename);
     const service_literal = require(literals.service)(resource);
     makefile(service_filepath, service_literal, invoke_callback);
@@ -151,6 +154,23 @@ module.exports.g = function(res, next, options) {
     log('2. Check "service_filepath" ~>', service_filepath);
     log('3. Check "service_literal" ~>', typeof service_literal === 'string');
   }
+
+/// STEP 4. Generate Validators file ///
+if (createTask.validator) {
+  
+  log("\n");
+  log("# Generate Validator file");
+
+  // Generate Validator file
+
+  const validator_filename = `${resourceSingularized}Validator.js`;
+  const validator_filepath = path.join(rootpath,'src', 'validators', validator_filename);
+  const validator_literal = require(literals.validator)(resource);
+  makefile(validator_filepath, validator_literal, invoke_callback);
+  log('1. Check "validator_filename" ~>', validator_filename);
+  log('2. Check "validator_filepath" ~>', validator_filepath);
+  log('3. Check "validator_literal" ~>', typeof validator_literal === 'string');
+}
 
 
   /// STEP 5. Generate View file ///
@@ -193,9 +213,8 @@ module.exports.g = function(res, next, options) {
     log("# Generate Routes");
 
     // Generate entity route file
-    const resourceSingular = string_.singularizer(resource);
-
-    const route_filename = `${resourceSingular}Routes.js`;
+    
+    const route_filename = `${resourceSingularized}Routes.js`;
     const route_filepath = path.join(rootpath,'src', 'routes', route_filename);
     const route_literal = require(literals.router)(resource);
     makefile(route_filepath, route_literal, invoke_callback);
@@ -208,8 +227,8 @@ module.exports.g = function(res, next, options) {
     function insertRouter(routerpath) {
       fs.readFile(routerpath, 'utf8', function(err, data) {
         
-        let import_entity_route_file_literal = `import ${resourceSingular}Routes from './routes/${resourceSingular}Routes.js';`
-        let route_literal = `router.use('/${resource}', ${resourceSingular}Routes);`
+        let import_entity_route_file_literal = `import ${resourceSingularized}Routes from './routes/${resourceSingularized}Routes.js';`
+        let route_literal = `router.use('/${resource}', ${resourceSingularized}Routes);`
 
         data = data.replace("\n\n"+route_literal, '');
         data = data.replace(import_entity_route_file_literal, '');

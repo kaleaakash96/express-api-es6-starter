@@ -17,7 +17,7 @@ String.prototype.to_snakecase = function () {
 }
 
 const normalizer = function (str) {
-  return pluralize.plural(str.trim().to_snakecase()).replace(' ', '_').replace('__', '_')
+  return pluralize.plural(str.trim().to_camelcase()).replace(' ', '_').replace('__', '_')
 }
 
 const denormalizer = function (str) {
