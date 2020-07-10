@@ -1,6 +1,4 @@
 import bookshelf from '../db';
-import bcrypt from 'bcrypt';
-import { at } from 'lodash';
 
 /**
  * Base model.
