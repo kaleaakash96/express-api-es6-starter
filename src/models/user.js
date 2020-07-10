@@ -22,6 +22,17 @@ class User extends bookshelf.Model {
     return true;
   }
 
+  /**
+   * 
+   */
+  get hidden(){
+    return ['password','deleted_at'];
+  }
+
+  get soft(){
+    return ['deleted_at'];
+  }
+
   static getFillableCollumns(){
     return [
       "first_name",

@@ -22,6 +22,6 @@ import knexConfig from './knexfile';
 const knex = knexJs(knexConfig);
 const bookshelf = bookshelfJs(knex);
 
-bookshelf.plugin(['bookshelf-virtuals-plugin']);
+bookshelf.plugin(['bookshelf-virtuals-plugin','bookshelf-soft-delete']);
 
 export default bookshelf;

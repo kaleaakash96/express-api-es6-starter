@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
-import UsersController from '../controllers/usersController' ;
+import UserController from '../controllers/userController' ;
 import { findUser, userValidator } from '../validators/userValidator';
 import jwtMiddleware from '../middlewares/jwtMiddleware';
 
 const router = Router();
 
-const userController = new UsersController();
+const userController = new UserController();
 /**
  * GET /api/users
  */

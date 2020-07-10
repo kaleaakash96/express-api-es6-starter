@@ -1,3 +1,4 @@
+import HttpStatus from 'http-status-codes';
 class BaseController {
 
     /**
