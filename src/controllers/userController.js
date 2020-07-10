@@ -2,7 +2,7 @@ import HttpStatus from 'http-status-codes';
 import BaseController from '../base/baseController'
 import UserService from '../services/userService';
 
-const userServce = new UserService();
+const userService = new UserService();
 
 class UserController extends BaseController{
   
@@ -11,7 +11,7 @@ class UserController extends BaseController{
    */
   getService(){
     super.getService();
-    return userServce;
+    return userService;
   }
 
   /**
