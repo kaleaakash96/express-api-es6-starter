@@ -1,36 +1,19 @@
 import bookshelf from '../db';
 import bcrypt from 'bcrypt';
 import { at } from 'lodash';
+import BaseModel from '../base/baseModel';
 
 const TABLE_NAME = 'users';
 
 /**
  * User model.
  */
-class User extends bookshelf.Model {
+class User extends BaseModel {
   /**
    * Get table name.
    */
   get tableName() {
     return TABLE_NAME;
-  }
-
-  /**
-   * Table has timestamps.
-   */
-  get hasTimestamps() {
-    return true;
-  }
-
-  /**
-   * 
-   */
-  get hidden(){
-    return ['password','deleted_at'];
-  }
-
-  get soft(){
-    return ['deleted_at'];
   }
 
   static getFillableCollumns(){
