@@ -154,9 +154,9 @@ Run tests with coverage.
 
     $ yarn test:coverage
 
-## Scaffold CRUD ( Model Controller Servcices Validators and Routes for any new entity).
+## Scaffold CRUD.
 
-To generate crud ( model , controller , services , validators and routes ) for new entity names `posts` run the following command 
+To generate crud ( model , controller , services , validators and routes ) for new entity named say for eg `posts` run the following command 
 
     $ npm run g --res=posts
 
