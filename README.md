@@ -154,6 +154,12 @@ Run tests with coverage.
 
     $ yarn test:coverage
 
+## Scaffold CRUD ( Model Controller Servcices Validators and Routes for any new entity).
+
+To generate crud ( model , controller , services , validators and routes ) for new entity names `posts` run the following command 
+
+    $ npm run g --res=posts
+
 ## Why 8848?
 
 Because the highest point in the world is [8848 metres](https://en.wikipedia.org/wiki/Mount_Everest).
