@@ -21,7 +21,8 @@ router.get('/swagger.json', (req, res) => {
 router.get('/', (req, res) => {
   res.json({
     app: req.app.locals.title,
-    apiVersion: req.app.locals.version
+    appVersion: req.app.locals.version,
+    apiVersion: req.app.locals.apiVersion
   });
 });
 

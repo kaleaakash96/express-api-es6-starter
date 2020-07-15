@@ -34,6 +34,7 @@ app.set('host', APP_HOST);
 
 app.locals.title = process.env.APP_NAME;
 app.locals.version = process.env.APP_VERSION;
+app.locals.apiVersion = process.env.API_VERSION;
 
 // This request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
@@ -48,6 +49,12 @@ app.use(errorHandler.bodyParser);
 app.use(json);
 
 // API Routes
+app.get('/', (req, res) => {
+  res.json({
+    app: req.app.locals.title,
+    appVersion: req.app.locals.version
+  });
+});
 app.use('/api', routes);
 
 // Swagger UI
