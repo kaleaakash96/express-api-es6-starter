@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Express API ES6 Starter",
   "scripts": {
-    "start": "node dist",
+    "start": "node dist/index.js",
     "prestart": "npm run build",
     "lint": "eslint src test",
     "lint:fix": "eslint src test --fix",
@@ -19,7 +19,8 @@
     "start:dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
     "test": "cross-env NODE_ENV=test mocha --exit --recursive --require @babel/register test",
     "test:coverage": "cross-env NODE_ENV=test nyc --require @babel/register --reporter lcov --reporter text mocha --exit --recursive test",
-    "g": "node -e 'require(\"./src/scaffolders/generate.js\").g()'"
+    "g": "node -e 'require(\"./src/scaffolders/generate.js\").g()'",
+    "heroku-postbuild": "npm install"
   },
   "husky": {
     "hooks": {
