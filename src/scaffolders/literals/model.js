@@ -5,7 +5,6 @@ const resourceSingular = string_.singularizer(resource);
 const resourceDenormalized = string_.denormalizer(resource);
 
   return `
-  import bcrypt from 'bcrypt';
   import BaseModel from '../base/baseModel';
   
   const TABLE_NAME = '${resource}';
@@ -23,8 +22,7 @@ const resourceDenormalized = string_.denormalizer(resource);
   
   }
   
-  export default ${resourceDenormalized};
-  
+  export default bookshelf.model('${resourceDenormalized}', ${resourceDenormalized});
 `;
 }
 

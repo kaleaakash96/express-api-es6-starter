@@ -1,5 +1,7 @@
 import bcrypt from 'bcrypt';
 import BaseModel from '../base/baseModel';
+import bookshelf from "../db"
+
 
 const TABLE_NAME = 'users';
 
@@ -70,4 +72,4 @@ class User extends BaseModel {
 
 }
 
-export default User;
+export default bookshelf.model('User', User);
