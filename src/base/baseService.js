@@ -16,8 +16,17 @@ class BaseService{
    *
    * @returns {Promise}
    */
-  fetchAll() {
-    return this.getModel().fetchAll();
+  fetchAll(options) {
+    return this.getModel().fetchAll(options);
+  }
+
+  /**
+   * Get all resources.
+   *
+   * @returns {Promise}
+   */
+  fetchPage(options) {
+    return this.getModel().fetchPage(options);
   }
 
   /**
