@@ -6,6 +6,7 @@ const resourceDenormalized = string_.denormalizer(resource);
 
   return `
   import BaseModel from '../base/baseModel';
+  import bookshelf from "../db"
   
   const TABLE_NAME = '${resource}';
   
